@@ -70,7 +70,7 @@ WHERE
     AND c.nome = 'Técnico em Desenvolvimento de Sistemas';
 
 
-DELIMITER $$
+DELIMITER //
 
 CREATE PROCEDURE proc_esco()
 BEGIN
@@ -103,7 +103,7 @@ BEGIN
     WHERE 
         t.turma = '3DS'
         AND c.nome = 'Técnico em Desenvolvimento de Sistemas';
-END$$
+END //
 
 DELIMITER ;
 
