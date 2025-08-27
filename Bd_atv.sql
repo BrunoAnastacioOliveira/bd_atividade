@@ -69,4 +69,43 @@ WHERE
     t.turma = '3DS'
     AND c.nome = 'Técnico em Desenvolvimento de Sistemas';
 
+
+DELIMITER $$
+
+CREATE PROCEDURE proc_esco()
+BEGIN
+    INSERT INTO cursos (nome) VALUES ('Técnico em Desenvolvimento de Sistemas');
+    SELECT LAST_INSERT_ID() INTO @curso_id;
+
+    INSERT INTO turmas (turma, id_curso) VALUES ('3DS', @curso_id);
+    SELECT LAST_INSERT_ID() INTO @turma_id;
+
+    INSERT INTO alunos (nome, idade, id_turma) VALUES ('João Silva', 17, @turma_id);
+    SELECT LAST_INSERT_ID() INTO @aluno1_id;
+
+    INSERT INTO alunos (nome, idade, id_turma) VALUES ('Maria Oliveira', 18, @turma_id);
+    SELECT LAST_INSERT_ID() INTO @aluno2_id;
+
+    INSERT INTO boletim (id_curso, id_turma, id_aluno, nota) VALUES
+        (@curso_id, @turma_id, @aluno1_id, 8.5),
+        (@curso_id, @turma_id, @aluno2_id, 9.0);
+
+    SELECT 
+        c.nome AS curso,
+        t.turma,
+        a.nome AS aluno,
+        b.nota
+    FROM 
+        boletim b
+    JOIN alunos a ON b.id_aluno = a.id_aluno
+    JOIN turmas t ON b.id_turma = t.id
+    JOIN cursos c ON b.id_curso = c.id
+    WHERE 
+        t.turma = '3DS'
+        AND c.nome = 'Técnico em Desenvolvimento de Sistemas';
+END$$
+
+DELIMITER ;
+
+
 CALL proc_esco();
